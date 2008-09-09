@@ -1,11 +1,11 @@
 Summary:	A GTK+ administation tool for the ISC DHCPD server
 Name:		gadmin-dhcpd
 Version:	0.4.4
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPLv2+
 Group:		System/Configuration/Networking
 URL:		http://www.gadmintools.org/
-Source0:	http://mange.dynalias.org/linux/%{oname}/%{name}-%{version}.tar.gz
+Source0:	http://mange.dynalias.org/linux/%{name}/%{name}-%{version}.tar.gz
 Source1:	%{name}.pam
 BuildRequires:	gtk+2-devel
 BuildRequires:	ImageMagick
@@ -72,7 +72,7 @@ ln -s %{_bindir}/consolehelper %{buildroot}%{_sbindir}/gadmin-dhcpd
 mkdir -p %{buildroot}%{_sysconfdir}/security/console.apps
 cat > %{buildroot}%{_sysconfdir}/security/console.apps/%{name} <<_EOF_
 USER=root
-PROGRAM=%{_sbindir}/gadmin-dhcpd.real
+PROGRAM=%{_sbindir}/%{name}.real
 SESSION=true
 FALLBACK=false
 _EOF_
