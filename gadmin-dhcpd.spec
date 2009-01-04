@@ -1,8 +1,8 @@
 Summary:	A GTK+ administation tool for the ISC DHCPD server
 Name:		gadmin-dhcpd
 Version:	0.4.4
-Release:	%mkrel 2
-License:	GPLv2+
+Release:	%mkrel 3
+License:	GPLv3+
 Group:		System/Configuration/Networking
 URL:		http://www.gadmintools.org/
 Source0:	http://mange.dynalias.org/linux/%{name}/%{name}-%{version}.tar.gz
@@ -17,15 +17,13 @@ Provides:	gdhcpd
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
-GDHCPD is a fast and easy to use GTK+ administration tool for the
+Gadmin-Dhcpd is a fast and easy to use GTK+ administration tool for the
 ISC DHCPD server.
 
 %prep
-
 %setup -q
 
 %build
-
 %configure2_5x
 
 perl -pi -e 's|^#define DHCPD_BINARY .*|#define DHCPD_BINARY \"%{_sbindir}/dhcpd\"|g' config.h
@@ -47,27 +45,27 @@ install -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/pam.d/%{name}
 install -m 644 etc/security/console.apps/%{name} %{buildroot}%{_sysconfdir}/security/console.apps/%{name}
 
 # locales
-%find_lang %name
+%find_lang %{name}
 
-# Mandriva Icons
-install -d %{buildroot}%{_iconsdir}
-install -d %{buildroot}%{_miconsdir}
-install -d %{buildroot}%{_liconsdir}
-convert -geometry 48x48 pixmaps/%{name}.png %{buildroot}%{_liconsdir}/%{name}.png
-convert -geometry 32x32 pixmaps/%{name}.png %{buildroot}%{_iconsdir}/%{name}.png
-convert -geometry 16x16 pixmaps/%{name}.png %{buildroot}%{_miconsdir}/%{name}.png
+# Icons
+mkdir -p %{buildroot}%{_iconsdir}/hicolor/{16x16,32x32,48x48}/apps
+convert -geometry 48x48 pixmaps/%{name}.png %{buildroot}%{_iconsdir}/hicolor/48x48/apps/%{name}.png
+convert -geometry 32x32 pixmaps/%{name}.png %{buildroot}%{_iconsdir}/hicolor/32x32/apps/%{name}.png
+convert -geometry 16x16 pixmaps/%{name}.png %{buildroot}%{_iconsdir}/hicolor/16x16/apps/%{name}.png
 
 mkdir -p %{buildroot}%{_datadir}/applications
+sed -i -e 's,%{name}.png,%{name},g' desktop/%{name}.desktop
+sed -i -e 's,GADMIN-DHCPD,Gadmin-Dhcpd,g' desktop/%{name}.desktop
 mv desktop/%{name}.desktop %{buildroot}%{_datadir}/applications/%{name}.desktop
-perl -pi -e 's,%{name}.png,%{name},g' %{buildroot}%{_datadir}/applications/*
 desktop-file-install --vendor="" \
     --remove-category="Application" \
     --add-category="Settings;Network;GTK;" \
     --dir %{buildroot}%{_datadir}/applications %{buildroot}%{_datadir}/applications/*
 
 # Prepare usermode entry
+mkdir -p %{buildroot}%{_bindir}
 mv %{buildroot}%{_sbindir}/gadmin-dhcpd %{buildroot}%{_sbindir}/gadmin-dhcpd.real
-ln -s %{_bindir}/consolehelper %{buildroot}%{_sbindir}/gadmin-dhcpd
+ln -s %{_bindir}/consolehelper %{buildroot}%{_bindir}/gadmin-dhcpd
 
 mkdir -p %{buildroot}%{_sysconfdir}/security/console.apps
 cat > %{buildroot}%{_sysconfdir}/security/console.apps/%{name} <<_EOF_
@@ -97,11 +95,10 @@ rm -rf %{buildroot}
 %doc COPYING AUTHORS ChangeLog
 %config(noreplace) %{_sysconfdir}/pam.d/%{name}
 %config(noreplace) %{_sysconfdir}/security/console.apps/%{name}
-%{_sbindir}/%{name}
+%{_bindir}/%{name}
 %{_sbindir}/%{name}.real
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/pixmaps/*.png
 %{_datadir}/pixmaps/%{name}/%{name}.png
-%{_iconsdir}/%{name}.png
-%{_miconsdir}/%{name}.png
-%{_liconsdir}/%{name}.png
+%{_iconsdir}/hicolor/*/apps/%{name}.png
+
