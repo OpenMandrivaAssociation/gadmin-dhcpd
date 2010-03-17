@@ -35,7 +35,7 @@ perl -pi -e 's|^#define LEASE_FILE .*|#define LEASE_FILE \"%{_localstatedir}/lib
 %install
 rm -rf %{buildroot}
 
-%makeinstall INSTALL_USER=`id -un` INSTALL_GROUP=`id -gn`
+%makeinstall_std INSTALL_USER=`id -un` INSTALL_GROUP=`id -gn`
 
 # pam auth
 install -d %{buildroot}%{_sysconfdir}/pam.d/
