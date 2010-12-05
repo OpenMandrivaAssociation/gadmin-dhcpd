@@ -1,7 +1,7 @@
 Summary:	A GTK+ administation tool for the ISC DHCPD server
 Name:		gadmin-dhcpd
 Version:	0.4.9
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPLv3+
 Group:		System/Configuration/Networking
 URL:		http://www.gadmintools.org/
